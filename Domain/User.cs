@@ -11,6 +11,7 @@ namespace Domain
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Guid? BranchId { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public RoleEnum Role { get; set; }
 
         public Restaurant Restaurant { get; set; }
         public Branch Branch { get; set; }

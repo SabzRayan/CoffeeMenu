@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Domain.Constant;
 using Domain.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +9,7 @@ namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedData(DataContext context, UserManager<User> userManager)
         {
             if (!await userManager.Users.AnyAsync())
             {
@@ -20,17 +19,9 @@ namespace Persistence
                     EmailConfirmed = true,
                     PhoneNumber = "+989117762926",
                     PhoneNumberConfirmed = true,
-                    UserName = "Coffee Menu"
+                    UserName = "CoffeeMenu",
+                    Role = RoleEnum.Admin
                 };
-
-                var adminRole = new IdentityRole { Name = Constants.AdminRole };
-                var managerRole = new IdentityRole { Name = Constants.ManagerRole };
-                var cashierRole = new IdentityRole { Name = Constants.CashierRole };
-                var waiterRole = new IdentityRole { Name = Constants.WaiterRole };
-                await roleManager.CreateAsync(adminRole);
-                await roleManager.CreateAsync(managerRole);
-                await roleManager.CreateAsync(cashierRole);
-                await roleManager.CreateAsync(waiterRole);
 
                 await context.Modules.AddRangeAsync(new List<Module> {
                     new Module
@@ -46,9 +37,7 @@ namespace Persistence
                         Price = 500000
                     }
                 });
-
                 await userManager.CreateAsync(user, "Pa$$w0rd");
-                await userManager.AddToRoleAsync(user, Constants.AdminRole);
                 await context.SaveChangesAsync();
             }
         }

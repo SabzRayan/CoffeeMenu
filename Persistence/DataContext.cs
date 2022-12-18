@@ -87,7 +87,7 @@ namespace Persistence
 
                 x.HasOne(a => a.Restaurant)
                     .WithMany(a => a.Categories)
-                    .HasForeignKey(a => a.RestaurentId)
+                    .HasForeignKey(a => a.RestaurantId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 

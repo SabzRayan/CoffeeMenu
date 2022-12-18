@@ -9,7 +9,7 @@ namespace Domain
         public string Name { get; set; }
         public Guid? ParentId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public Guid RestaurentId { get; set; }
+        public Guid RestaurantId { get; set; }
         public bool IsDeleted { get; set; } = false;
 
         public Category Parent { get; set; }
