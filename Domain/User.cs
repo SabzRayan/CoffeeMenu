@@ -7,6 +7,7 @@ namespace Domain
 {
     public class User : IdentityUser
     {
+        public string Name { get; set; }
         public Guid? RestaurantId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Guid? BranchId { get; set; }

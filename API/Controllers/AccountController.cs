@@ -70,7 +70,8 @@ namespace API.Controllers
 
             var user = new User
             {
-                UserName = registerDto.Name,
+                Name = registerDto.Name,
+                UserName = registerDto.Email,
                 Email = registerDto.Email,
                 PhoneNumber = registerDto.PhoneNumber,
                 Role = Domain.Enum.RoleEnum.Manager

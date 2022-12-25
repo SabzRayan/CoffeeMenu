@@ -15,11 +15,12 @@ namespace Persistence
             {
                 var user = new User
                 {
+                    Name = "Coffee Menu",
                     Email = "admin@coffeemenu.ir",
                     EmailConfirmed = true,
                     PhoneNumber = "+989117762926",
                     PhoneNumberConfirmed = true,
-                    UserName = "CoffeeMenu",
+                    UserName = "admin@coffeemenu.ir",
                     Role = RoleEnum.Admin
                 };
 
