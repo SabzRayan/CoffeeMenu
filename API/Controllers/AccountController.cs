@@ -165,6 +165,7 @@ namespace API.Controllers
         {
             return new UserDto
             {
+                Name = user.Name,
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
                 Username = user.UserName,
