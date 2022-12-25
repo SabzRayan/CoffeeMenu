@@ -45,7 +45,10 @@ namespace Application.Branches
                 //if (branch.Owner.UserName != userAccessor.GetUsername()) return Result<Unit>.Failure("You can't edit clubs made by someone else");
                 foreach (var branchCategory in request.BranchCategories)
                 {
-                    if (!branch.Categories.Any(a => a.CategoryId == branchCategory.CategoryId))
+                    var isExist = branch.Categories.FirstOrDefault(a => a.CategoryId == branchCategory.CategoryId);
+                    if (isExist != null)
+                        branch.Categories.Remove(isExist);
+                    else
                         branch.Categories.Add(new BranchCategory { CategoryId = branchCategory.CategoryId });
                 }
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System;
 using Application.Branches;
+using System.Collections.Generic;
 
 namespace API.Controllers
 {
@@ -28,6 +29,13 @@ namespace API.Controllers
         public async Task<IActionResult> CreateBranch([FromBody] Branch branch)
         {
             return HandleResult(await Mediator.Send(new CreateBranch.Command { Branch = branch }));
+        }
+
+        [Authorize(Policy = "IsManager")]
+        [HttpPost("toggleCategories")]
+        public async Task<IActionResult> AddBranchCategory([FromBody] List<BranchCategory> categories)
+        {
+            return HandleResult(await Mediator.Send(new AddBranchCategory.Command { BranchCategories = categories }));
         }
 
         [Authorize(Policy = "IsManager")]
