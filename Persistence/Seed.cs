@@ -20,7 +20,7 @@ namespace Persistence
                     EmailConfirmed = true,
                     PhoneNumber = "+989117762926",
                     PhoneNumberConfirmed = true,
-                    UserName = "admin@coffeemenu.ir",
+                    UserName = "CoffeeMenu",
                     Role = RoleEnum.Admin
                 };
 
