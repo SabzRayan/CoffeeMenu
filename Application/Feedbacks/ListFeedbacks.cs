@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Feedbacks
 {
-    public class ListCities
+    public class ListFeedbacks
     {
         public class Query : IRequest<Result<PagedList<FeedbackDto>>>
         {
@@ -32,7 +32,8 @@ namespace Application.Feedbacks
                 var query = context.Feedbacks
                     .Where(a => (request.Params.ShowDeleted || !a.IsDeleted) &&
                                 (request.Params.ProductId == null || a.OrderDetail.ProductId == request.Params.ProductId) &&
-                                (request.Params.OrderId == null || a.OrderDetail.OrderId == request.Params.OrderId))
+                                (request.Params.OrderId == null || a.OrderDetail.OrderId == request.Params.OrderId) &&
+                                (request.Params.BranchId == null || a.OrderDetail.Order.BranchId == request.Params.BranchId))
                     .ProjectTo<FeedbackDto>(mapper.ConfigurationProvider)
                     .AsQueryable();
 

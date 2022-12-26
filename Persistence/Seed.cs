@@ -15,6 +15,7 @@ namespace Persistence
             {
                 var user = new User
                 {
+                    Name = "Coffee Menu",
                     Email = "admin@coffeemenu.ir",
                     EmailConfirmed = true,
                     PhoneNumber = "+989117762926",

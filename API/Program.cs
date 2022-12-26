@@ -1,9 +1,7 @@
 using API.Extensions;
 using API.Middleware;
 using API.SignalR;
-using Application.Cities;
 using Domain;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -84,9 +82,8 @@ try
 {
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<User>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedData(context, userManager, roleManager);
+    await Seed.SeedData(context, userManager);
 }
 catch (Exception ex)
 {
