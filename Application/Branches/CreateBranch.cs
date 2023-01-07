@@ -1,12 +1,12 @@
 ﻿using Application.Core;
+using Application.Interfaces;
 using Domain;
+using Domain.Enum;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,14 +30,19 @@ namespace Application.Branches
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext context;
+            private readonly IUserAccessor userAccessor;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
                 this.context = context;
+                this.userAccessor = userAccessor;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var myRestaurant = await context.Restaurants.FirstOrDefaultAsync(a => a.Users.Any(b => b.Role == RoleEnum.Manager && b.Id == userAccessor.GetUserId()), cancellationToken: cancellationToken);
+                if (myRestaurant == null) return Result<Unit>.Failure("You have to save your restaurant data first!");
+                request.Branch.RestaurantId = myRestaurant.Id;
                 await context.Branches.AddAsync(request.Branch, cancellationToken);
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;
                 if (!result) return Result<Unit>.Failure("Failed to create branch");

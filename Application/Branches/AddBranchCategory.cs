@@ -1,6 +1,7 @@
 ﻿using Application.Core;
 using Application.Interfaces;
 using Domain;
+using Domain.Enum;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,19 +31,19 @@ namespace Application.Branches
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext context;
-            //private readonly IUserAccessor userAccessor;
+            private readonly IUserAccessor userAccessor;
 
-            public Handler(DataContext context) //, IUserAccessor userAccessor)
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
                 this.context = context;
-                //this.userAccessor = userAccessor;
+                this.userAccessor = userAccessor;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var branch = await context.Branches.Include(a => a.Categories).FirstOrDefaultAsync(x => x.Id == request.BranchCategories.First().BranchId, cancellationToken: cancellationToken);
+                var branch = await context.Branches.Include(a => a.Categories).Include(a => a.Restaurant.Users).FirstOrDefaultAsync(x => x.Id == request.BranchCategories.First().BranchId, cancellationToken: cancellationToken);
                 if (branch == null) return null;
-                //if (branch.Owner.UserName != userAccessor.GetUsername()) return Result<Unit>.Failure("You can't edit clubs made by someone else");
+                if (branch.Restaurant.Users.FirstOrDefault(a => a.Role == RoleEnum.Manager).Id != userAccessor.GetUserId()) return Result<Unit>.Failure("You can't edit branches made by someone else");
                 foreach (var branchCategory in request.BranchCategories)
                 {
                     var isExist = branch.Categories.FirstOrDefault(a => a.CategoryId == branchCategory.CategoryId);
