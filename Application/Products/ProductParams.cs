@@ -12,5 +12,7 @@ namespace Application.Products
         public bool? ShowAvailable { get; set; }
         public bool? ShowExist { get; set; }
         public Guid? CategoryId { get; set; }
+        public Guid? BranchId { get; set; }
+        public Guid? RestaurantId { get; set; }
     }
 }

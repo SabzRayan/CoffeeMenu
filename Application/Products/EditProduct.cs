@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -27,16 +28,20 @@ namespace Application.Products
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext context;
+            private readonly IUserAccessor userAccessor;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
                 this.context = context;
+                this.userAccessor = userAccessor;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await context.Products.Include(a => a.Attachments).FirstOrDefaultAsync(a => a.Id == request.Product.Id, cancellationToken: cancellationToken);
+                var product = await context.Products.Include(a => a.Attachments).Include(a => a.Category).FirstOrDefaultAsync(a => a.Id == request.Product.Id, cancellationToken: cancellationToken);
                 if (product == null) return null;
+                var me = await context.Users.FindAsync(new object[] { userAccessor.GetUserId() }, cancellationToken);
+                if (me.RestaurantId != product.Category.RestaurantId) return Result<Unit>.Failure("You can't edit products from a restaurant made by someone else");
                 product.Calory = request.Product.Calory;
                 product.CategoryId = request.Product.CategoryId;
                 product.Description = request.Product.Description;
