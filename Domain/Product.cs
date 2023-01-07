@@ -21,6 +21,7 @@ namespace Domain
         public Guid CategoryId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; } = false;
+        public bool ChefSuggestion { get; set; } = false;
 
         public Category Category { get; set; }
         public ICollection<Attachment> Attachments { get; set; } = new List<Attachment>();

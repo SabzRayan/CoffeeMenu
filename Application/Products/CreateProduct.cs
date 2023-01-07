@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -26,14 +27,18 @@ namespace Application.Products
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext context;
+            private readonly IUserAccessor userAccessor;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
                 this.context = context;
+                this.userAccessor = userAccessor;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var me = await context.Users.FindAsync(new object[] { userAccessor.GetUserId() }, cancellationToken);
+                if (me.RestaurantId != request.Product.Category.RestaurantId) return Result<Unit>.Failure("You can't add products to a restaurant made by someone else");
                 await context.Products.AddAsync(request.Product, cancellationToken);
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;
                 if (!result) return Result<Unit>.Failure("Failed to create product");

@@ -21,6 +21,7 @@ namespace Application.Products
         public DateTime CreatedAt { get; set; }
         public string CategoryName { get; set; }
         public int LikeCount { get; set; }
+        public bool ChefSuggestion { get; set; }
 
         public IEnumerable<AttachmentDto> Attachments { get; set; }
     }

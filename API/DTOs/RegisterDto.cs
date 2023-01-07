@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
@@ -17,7 +17,7 @@ namespace API.DTOs
         public string PhoneNumber { get; set; }
 
         [Required]
-        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password must be complex")]
+        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$", ErrorMessage = "Password must be complex")]
         public string Password { get; set; }
     }
 }

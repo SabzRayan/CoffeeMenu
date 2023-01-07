@@ -1,4 +1,4 @@
-﻿using Domain;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -21,6 +21,13 @@ namespace API.Controllers
         public async Task<IActionResult> GetRestaurant([FromRoute] Guid id)
         {
             return HandleResult(await Mediator.Send(new RestaurantDetails.Query { Id = id }));
+        }
+
+        [Authorize(Policy = "IsManager")]
+        [HttpGet("my-restaurant")]
+        public async Task<IActionResult> GetMyRestaurant()
+        {
+            return HandleResult(await Mediator.Send(new MyRestaurant.Query { }));
         }
 
         [Authorize(Policy = "IsManager")]

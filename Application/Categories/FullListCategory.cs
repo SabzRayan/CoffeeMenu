@@ -35,7 +35,7 @@ namespace Application.Categories
                 var categoryList = await context.Categories
                     .Where(a => !a.IsDeleted &&
                                 (request.CategoryParams.ParentId == null || a.ParentId == request.CategoryParams.ParentId) &&
-                                (request.CategoryParams.BranchId == null || a.Branches.Any(b => b.Id == request.CategoryParams.BranchId)) &&
+                                (request.CategoryParams.BranchId == null || a.Branches.Any(b => b.BranchId == request.CategoryParams.BranchId)) &&
                                 (request.CategoryParams.RestaurantId == null || a.RestaurantId == request.CategoryParams.RestaurantId))
                     .ProjectTo<CategoryDto>(mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);

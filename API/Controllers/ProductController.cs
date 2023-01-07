@@ -1,4 +1,4 @@
-﻿using Domain;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -14,6 +14,13 @@ namespace API.Controllers
         public async Task<IActionResult> GetProducts([FromQuery] ProductParams param)
         {
             return HandlePagedResult(await Mediator.Send(new ListProduct.Query { Params = param }));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("best")]
+        public async Task<IActionResult> GetBestProducts([FromQuery] ProductParams param)
+        {
+            return HandleResult(await Mediator.Send(new ListBestProduct.Query { Params = param }));
         }
 
         [AllowAnonymous]
