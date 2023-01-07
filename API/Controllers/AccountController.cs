@@ -1,4 +1,4 @@
-﻿using API.DTOs;
+using API.DTOs;
 using API.Services;
 using Application.Users;
 using Domain;
@@ -160,7 +160,7 @@ namespace API.Controllers
             };
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
-
+        
         private UserDto CreateUserObject(User user)
         {
             return new UserDto
