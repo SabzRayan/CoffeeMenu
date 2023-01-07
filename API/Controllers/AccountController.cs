@@ -46,7 +46,7 @@ namespace API.Controllers
             if (result.Succeeded)
             {
                 await SetRefreshToken(user);
-                return await CreateUserObject(user);
+                return CreateUserObject(user);
             }
 
             return Unauthorized("Invalid password");
@@ -130,7 +130,7 @@ namespace API.Controllers
         {
             var user = await userManager.Users.Include(r => r.Restaurant).Include(r => r.Branch).FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
             await SetRefreshToken(user);
-            return await CreateUserObject(user);
+            return CreateUserObject(user);
         }
 
         [Authorize]
@@ -145,7 +145,7 @@ namespace API.Controllers
             if (user == null) return Unauthorized();
             var oldToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
             if (oldToken != null && !oldToken.IsActive) return Unauthorized();
-            return await CreateUserObject(user);
+            return CreateUserObject(user);
         }
 
         private async Task SetRefreshToken(User user)
@@ -161,7 +161,7 @@ namespace API.Controllers
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
 
-        private async Task<UserDto> CreateUserObject(User user)
+        private UserDto CreateUserObject(User user)
         {
             return new UserDto
             {
@@ -169,7 +169,7 @@ namespace API.Controllers
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
                 Username = user.UserName,
-                Roles = await userManager.GetRolesAsync(user),
+                Role = user.Role,
                 Token = tokenService.CreateToken(user)
             };
         }

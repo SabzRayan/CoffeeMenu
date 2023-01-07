@@ -32,14 +32,14 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new CategoryDetails.Query { Id = id }));
         }
 
-        [Authorize(Policy = "IsAdmin")]
+        [Authorize(Policy = "IsManager")]
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] Category category)
         {
             return HandleResult(await Mediator.Send(new CreateCategory.Command { Category = category }));
         }
 
-        [Authorize(Policy = "IsAdmin")]
+        [Authorize(Policy = "IsManager")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditCategory([FromRoute] Guid id, [FromBody] Category category)
         {
@@ -47,7 +47,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new EditCategory.Command { Category = category }));
         }
 
-        [Authorize(Policy = "IsAdmin")]
+        [Authorize(Policy = "IsManager")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory([FromRoute] Guid id)
         {

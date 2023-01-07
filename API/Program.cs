@@ -73,7 +73,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ChatHub>("/chat");
+app.MapHub<OrderHub>("/order");
 app.MapFallbackToController("Index", "Fallback");
 
 using var scope = app.Services.CreateScope();

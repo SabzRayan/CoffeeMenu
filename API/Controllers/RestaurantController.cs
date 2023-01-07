@@ -24,6 +24,13 @@ namespace API.Controllers
         }
 
         [Authorize(Policy = "IsManager")]
+        [HttpGet("my-restaurant")]
+        public async Task<IActionResult> GetMyRestaurant()
+        {
+            return HandleResult(await Mediator.Send(new MyRestaurant.Query { }));
+        }
+
+        [Authorize(Policy = "IsManager")]
         [HttpPost]
         public async Task<IActionResult> CreateRestaurant([FromBody] Restaurant restaurant)
         {

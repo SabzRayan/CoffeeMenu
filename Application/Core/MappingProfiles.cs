@@ -24,7 +24,8 @@ namespace Application.Core
             CreateMap<Attachment, AttachmentDto>();
             CreateMap<Branch, BranchDto>()
                 .ForMember(d => d.CityName, o => o.MapFrom(s => s.City.Name))
-                .ForMember(d => d.ProvinceName, o => o.MapFrom(s => s.Province.Name));
+                .ForMember(d => d.ProvinceName, o => o.MapFrom(s => s.Province.Name))
+                .ForMember(d => d.Logo, o => o.MapFrom(s => s.Restaurant.Logo));
             CreateMap<Category, CategoryDto>()
                 .ForMember(d => d.ParentName, o => o.MapFrom(s => s.Parent.Name));
             CreateMap<City, CityDto>()

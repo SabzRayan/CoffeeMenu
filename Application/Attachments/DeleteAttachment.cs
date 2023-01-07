@@ -1,4 +1,6 @@
 ﻿using Application.Core;
+using Application.Interfaces;
+using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -33,17 +35,25 @@ namespace Application.Attachments
         {
             private readonly DataContext context;
             private readonly IWebHostEnvironment webHostEnvironment;
+            private readonly IUserAccessor userAccessor;
 
-            public Handler(DataContext context, IWebHostEnvironment webHostEnvironment)
+            public Handler(DataContext context, IWebHostEnvironment webHostEnvironment, IUserAccessor userAccessor)
             {
                 this.context = context;
                 this.webHostEnvironment = webHostEnvironment;
+                this.userAccessor = userAccessor;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var attachment = await context.Attachments.FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken: cancellationToken);
                 if (attachment == null) return null;
+                var me = await context.Users.FindAsync(new object[] { userAccessor.GetUserId() }, cancellationToken);
+                if ((attachment.ProductId != null) ? 
+                    (me.RestaurantId != attachment.Product.Category.RestaurantId) : 
+                    (me.RestaurantId != attachment.Category.RestaurantId)) 
+                        return Result<Unit>.Failure("You can't delete attachments from a restaurant made by someone else");
+
                 if (attachment.IsMain) return Result<Unit>.Failure("You can't delete main attachment");
 
                 string directoryPath = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot");

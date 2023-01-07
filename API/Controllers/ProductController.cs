@@ -17,6 +17,13 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("best")]
+        public async Task<IActionResult> GetBestProducts([FromQuery] ProductParams param)
+        {
+            return HandleResult(await Mediator.Send(new ListBestProduct.Query { Params = param }));
+        }
+
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct([FromRoute] Guid id)
         {

@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -20,17 +21,21 @@ namespace Application.Feedbacks
         {
             private readonly DataContext context;
             private readonly IMapper mapper;
+            private readonly IUserAccessor userAccessor;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
                 this.context = context;
                 this.mapper = mapper;
+                this.userAccessor = userAccessor;
             }
 
             public async Task<Result<PagedList<FeedbackDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var me = await context.Users.FindAsync(new object[] { userAccessor.GetUserId() }, cancellationToken);
                 var query = context.Feedbacks
-                    .Where(a => (request.Params.ShowDeleted || !a.IsDeleted) &&
+                    .Where(a => (a.OrderDetail.Order.Branch.RestaurantId == me.RestaurantId) && 
+                                (request.Params.ShowDeleted || !a.IsDeleted) &&
                                 (request.Params.ProductId == null || a.OrderDetail.ProductId == request.Params.ProductId) &&
                                 (request.Params.OrderId == null || a.OrderDetail.OrderId == request.Params.OrderId) &&
                                 (request.Params.BranchId == null || a.OrderDetail.Order.BranchId == request.Params.BranchId))

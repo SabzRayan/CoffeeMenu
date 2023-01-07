@@ -37,7 +37,7 @@ namespace Application.Attachments
 
             public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (request.File.ContentType.ToLowerInvariant() != "image/*")
+                if (!request.File.ContentType.ToLowerInvariant().StartsWith("image/"))
                     return Result<string>.Failure("You can only send image files");
 
                 if (request.File.Length > (2*1024*1024))
