@@ -45,13 +45,15 @@ namespace Application.Products
                 product.Calory = request.Product.Calory;
                 product.CategoryId = request.Product.CategoryId;
                 product.Description = request.Product.Description;
-                product.Discount = request.Product.Discount;
+                //product.Discount = request.Product.Discount;
+                //product.Price = request.Product.Price;
                 product.IsAvailable = request.Product.IsAvailable;
                 product.IsExist = request.Product.IsExist;
-                product.Price = request.Product.Price;
                 product.Recipe = request.Product.Recipe;
                 product.Tags = request.Product.Tags;
                 product.Title = request.Product.Title;
+                product.ChefSuggestion = request.Product.ChefSuggestion;
+                product.ProductPrices = request.Product.ProductPrices;
                 context.RemoveRange(product.Attachments);
                 product.Attachments = request.Product.Attachments;
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;

@@ -25,6 +25,7 @@ namespace Persistence
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductPrice> ProductPrices { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
 
@@ -133,6 +134,14 @@ namespace Persistence
                 x.HasOne(a => a.Category)
                     .WithMany(a => a.Products)
                     .HasForeignKey(a => a.CategoryId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<ProductPrice>(x =>
+            {
+                x.HasOne(a => a.Product)
+                    .WithMany(a => a.ProductPrices)
+                    .HasForeignKey(a => a.ProductId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 

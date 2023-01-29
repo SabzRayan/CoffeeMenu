@@ -38,7 +38,8 @@ namespace Application.Products
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var me = await context.Users.FindAsync(new object[] { userAccessor.GetUserId() }, cancellationToken);
-                if (me.RestaurantId != request.Product.Category.RestaurantId) return Result<Unit>.Failure("You can't add products to a restaurant made by someone else");
+                var category = await context.Categories.FindAsync(new object[] { request.Product.CategoryId }, cancellationToken: cancellationToken);
+                if (me.RestaurantId != category.RestaurantId) return Result<Unit>.Failure("You can't add products to a restaurant made by someone else");
                 await context.Products.AddAsync(request.Product, cancellationToken);
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;
                 if (!result) return Result<Unit>.Failure("Failed to create product");

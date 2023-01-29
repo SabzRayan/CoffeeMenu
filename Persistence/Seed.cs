@@ -41,6 +41,19 @@ namespace Persistence
                 await userManager.CreateAsync(user, "Pa$$w0rd");
                 await context.SaveChangesAsync();
             }
+
+            //if (!await context.ProductPrices.AnyAsync())
+            //{
+            //    var allProducts = context.Products;
+            //    foreach (var product in allProducts)
+            //    {
+            //        product.ProductPrices.Add(new ProductPrice
+            //        {
+            //            Price = product.Price,
+            //        });
+            //    }
+            //    await context.SaveChangesAsync();
+            //}
         }
     }
 }

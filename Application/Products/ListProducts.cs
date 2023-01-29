@@ -32,7 +32,7 @@ namespace Application.Products
                 var query = context.Products
                     .Where(a => !a.IsDeleted &&
                                 (string.IsNullOrEmpty(request.Params.Title) || a.Title.Contains(request.Params.Title)) &&
-                                (request.Params.WithDiscount == null || (request.Params.WithDiscount == true ? a.Price > a.Discount : (a.Discount <= a.Price || a.Discount == 0))) &&
+                                //(request.Params.WithDiscount == null || (request.Params.WithDiscount == true ? a.Price > a.Discount : (a.Discount <= a.Price || a.Discount == 0))) &&
                                 (string.IsNullOrEmpty(request.Params.Tag) || a.Tags.Contains(request.Params.Tag)) &&
                                 (request.Params.MaxCalory == null || a.Calory <= request.Params.MaxCalory) &&
                                 (request.Params.ShowAvailable == null || request.Params.ShowAvailable == false || a.IsAvailable) &&

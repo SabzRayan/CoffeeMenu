@@ -12,7 +12,7 @@ namespace Application.Products
         public string Description { get; set; }
         public string Recipe { get; set; }
         public Double Price { get; set; }
-        public Double Discount { get; set; }
+        //public Double Discount { get; set; }
         public string Tags { get; set; }
         public int Calory { get; set; }
         public bool IsAvailable { get; set; }
@@ -24,5 +24,6 @@ namespace Application.Products
         public bool ChefSuggestion { get; set; }
 
         public IEnumerable<AttachmentDto> Attachments { get; set; }
+        public IEnumerable<ProductPriceDto> ProductPrices { get; set; }
     }
 }

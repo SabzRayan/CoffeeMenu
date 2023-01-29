@@ -38,12 +38,14 @@ namespace Application.Core
             CreateMap<OrderDetail, OrderDetailDto>();
             CreateMap<Product, ProductDto>()
                 .ForMember(d => d.CategoryName, o => o.MapFrom(s => s.Category.Name))
+                .ForMember(d => d.Price, o => o.MapFrom(s => s.ProductPrices.FirstOrDefault().Price))
                 .ForMember(d => d.LikeCount, o => o.MapFrom(s => s.OrderDetails.Count(a => a.Feedbacks.Any(b => b.Happiness == HappinessEnum.Good))));
             CreateMap<Province, ProvinceDto>()
                 .ForMember(d => d.RestaurantCount, o => o.MapFrom(s => s.Branches.Count));
             CreateMap<Restaurant, RestaurantDto>()
                 .ForMember(d => d.Modules, o => o.MapFrom(s => s.Modules.Select(a => a.Module)));
             CreateMap<User, UserDto>();
+            CreateMap<ProductPrice, ProductPriceDto>();
         }
     }
 }

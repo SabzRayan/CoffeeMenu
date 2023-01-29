@@ -35,7 +35,7 @@ namespace API.Extensions
                         .AllowAnyHeader()
                         .AllowCredentials()
                         .WithExposedHeaders("WWW-Authenticate", "Pagination")
-                        .WithOrigins("http://localhost:3000");
+                        .WithOrigins("http://localhost:3000", "https://admin.coffeemenu.ir");
                 });
             });
             services.AddMediatR(typeof(ListCities.Handler).Assembly);
