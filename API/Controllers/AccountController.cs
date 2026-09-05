@@ -170,6 +170,8 @@ namespace API.Controllers
                 Email = user.Email,
                 Username = user.UserName,
                 Role = user.Role,
+                RestaurantId = user.RestaurantId,
+                BranchId = user.BranchId,
                 Token = tokenService.CreateToken(user)
             };
         }

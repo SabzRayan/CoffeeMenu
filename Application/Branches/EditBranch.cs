@@ -41,7 +41,7 @@ namespace Application.Branches
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var branch = await context.Branches.Include(a => a.Restaurant.Users).FirstOrDefaultAsync(a => a.Id == request.Branch.Id, cancellationToken: cancellationToken);
+                var branch = await context.Branches.Include(a => a.Restaurant.Users).Include(a => a.Categories).FirstOrDefaultAsync(a => a.Id == request.Branch.Id, cancellationToken: cancellationToken);
                 if (branch == null) return null;
                 if (branch.Restaurant.Users.FirstOrDefault(a => a.Role == RoleEnum.Manager).Id != userAccessor.GetUserId()) return Result<Unit>.Failure("You can't edit branches made by someone else");
                 branch.Name = request.Branch.Name;
@@ -51,6 +51,8 @@ namespace Application.Branches
                 branch.Lng= request.Branch.Lng;
                 branch.CityId= request.Branch.CityId;
                 branch.ProvinceId= request.Branch.ProvinceId;
+                context.BranchCategories.RemoveRange(branch.Categories);
+                branch.Categories = request.Branch.Categories;
 
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;
                 if (!result) return Result<Unit>.Failure("Failed to update branch");

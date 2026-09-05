@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain;
+using System;
+using System.Collections.Generic;
 
 namespace Application.Branches
 {
@@ -15,5 +17,7 @@ namespace Application.Branches
         public string CityName { get; set; }
         public string ProvinceName { get; set; }
         public string Logo { get; set; }
+
+        public IEnumerable<BranchCategoryDto> Categories { get; set; }
     }
 }

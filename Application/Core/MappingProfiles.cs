@@ -46,6 +46,7 @@ namespace Application.Core
                 .ForMember(d => d.Modules, o => o.MapFrom(s => s.Modules.Select(a => a.Module)));
             CreateMap<User, UserDto>();
             CreateMap<ProductPrice, ProductPriceDto>();
+            CreateMap<BranchCategory, BranchCategoryDto>();
         }
     }
 }

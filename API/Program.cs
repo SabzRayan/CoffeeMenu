@@ -48,8 +48,8 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv7 v1"));
+    //app.UseSwagger();
+    //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv7 v1"));
 }
 else
 {
@@ -60,6 +60,9 @@ else
     //    await next.Invoke();
     //});
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv7 v1"));
 
 //app.UseHttpsRedirection();
 
